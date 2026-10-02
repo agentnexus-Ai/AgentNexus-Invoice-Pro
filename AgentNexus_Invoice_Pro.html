@@ -634,138 +634,170 @@
             </div>
         </section>
 
-        <!-- 2. QUICK BILLING & INVOICING VIEW -->
+        <!-- 2. QUICK BILLING & INVOICING VIEW (GENERAL INVOICE & MULTI-PRESET BUILDER) -->
         <section id="view-invoicing" class="hidden space-y-4">
-            <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md border border-slate-200 dark:border-slate-700 space-y-6">
                 
-                <!-- Invoice Header Details -->
-                <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700 gap-2">
-                    <div>
-                        <h2 class="text-base font-bold text-[#17365D] dark:text-cyan-400 flex items-center space-x-2">
-                            <span>New Commercial Invoice</span>
-                            <span id="invModeTag" class="text-[10px] bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-cyan-300 font-bold px-2 py-0.5 rounded">Mode: RETAIL</span>
-                        </h2>
-                        <div class="flex items-center space-x-1.5 mt-1">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase">Layout Preset:</span>
-                            <div class="inline-flex rounded-md shadow-sm" role="group">
-                                <button type="button" onclick="switchPresetQuick('RETAIL')" id="modeBtn-RETAIL" class="px-2.5 py-1 text-[11px] font-bold rounded-l-md border border-slate-300 dark:border-slate-600 bg-blue-600 text-white hover:bg-blue-700 transition">
-                                    🛍️ General Retail (No Sizes/Cartons)
-                                </button>
-                                <button type="button" onclick="switchPresetQuick('SERVICES')" id="modeBtn-SERVICES" class="px-2.5 py-1 text-[11px] font-bold border-t border-b border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
-                                    🛠️ Services
-                                </button>
-                                <button type="button" onclick="switchPresetQuick('WHOLESALE')" id="modeBtn-WHOLESALE" class="px-2.5 py-1 text-[11px] font-bold border-t border-b border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
-                                    📦 Wholesale
-                                </button>
-                                <button type="button" onclick="switchPresetQuick('APPAREL')" id="modeBtn-APPAREL" class="px-2.5 py-1 text-[11px] font-bold rounded-r-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
-                                    👕 Apparel Matrix
-                                </button>
+                <!-- Layout Preset Pills & Mode Switcher Bar -->
+                <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700 gap-3">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Invoice Format:</span>
+                        <div class="inline-flex rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-0.5 bg-slate-100 dark:bg-slate-900" role="group">
+                            <button type="button" onclick="switchPresetQuick('RETAIL')" id="modeBtn-RETAIL" class="px-3 py-1.5 text-xs font-bold rounded-md bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition flex items-center space-x-1">
+                                <span>🛍️ General Invoice</span>
+                            </button>
+                            <button type="button" onclick="switchPresetQuick('SERVICES')" id="modeBtn-SERVICES" class="px-3 py-1.5 text-xs font-bold rounded-md text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-800 transition flex items-center space-x-1">
+                                <span>🛠️ Services</span>
+                            </button>
+                            <button type="button" onclick="switchPresetQuick('WHOLESALE')" id="modeBtn-WHOLESALE" class="px-3 py-1.5 text-xs font-bold rounded-md text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-800 transition flex items-center space-x-1">
+                                <span>📦 Wholesale</span>
+                            </button>
+                            <button type="button" onclick="switchPresetQuick('APPAREL')" id="modeBtn-APPAREL" class="px-3 py-1.5 text-xs font-bold rounded-md text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-800 transition flex items-center space-x-1">
+                                <span>👕 Apparel Matrix</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span id="invModeTag" class="text-xs bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-cyan-300 font-bold px-2.5 py-1 rounded-full border border-blue-200 dark:border-blue-800">Mode: RETAIL</span>
+                        <button type="button" onclick="openModal('customerModal')" class="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white font-semibold px-2.5 py-1 rounded border border-slate-300 dark:border-slate-600 transition">
+                            + New Customer
+                        </button>
+                        <button type="button" onclick="openModal('productModal')" class="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white font-semibold px-2.5 py-1 rounded border border-slate-300 dark:border-slate-600 transition">
+                            + New Product
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modern Invoice Builder Header (Matching Reference Layout) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    
+                    <!-- Left Side: Logo & Who is this from -->
+                    <div class="lg:col-span-6 space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <!-- Interactive Logo Container -->
+                            <div id="invLogoContainer" class="flex-shrink-0">
+                                <label class="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-3 w-40 h-24 cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-slate-700/50 transition text-center group">
+                                    <span class="text-xs font-bold text-slate-600 dark:text-slate-300 group-hover:text-blue-600">+ Add Your Logo</span>
+                                    <span class="text-[10px] text-slate-400">PNG, JPG, SVG</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
+                                </label>
+                            </div>
+
+                            <!-- Who is this from -->
+                            <div class="flex-grow space-y-1">
+                                <label class="block text-[11px] font-bold text-slate-500 uppercase">Who is this from?</label>
+                                <input type="text" id="invCompanySender" class="w-full text-sm font-bold p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="Your Business / Company Name">
+                                <input type="text" id="invCompanyAddress" class="w-full text-xs p-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300" placeholder="Street Address, City, Country">
+                                <div class="grid grid-cols-2 gap-1.5">
+                                    <input type="text" id="invCompanyPhone" class="w-full text-xs p-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300" placeholder="Phone / Cell #">
+                                    <input type="text" id="invCompanyEmail" class="w-full text-xs p-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300" placeholder="Email Address">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bill To & Ship To Side-by-Side Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <!-- Bill To -->
+                            <div class="space-y-1.5 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+                                <label class="block text-xs font-black text-[#17365D] dark:text-cyan-400 uppercase tracking-wide">Bill To</label>
+                                <select id="invCustomer" onchange="onCustomerChange(this.value)" class="w-full text-xs p-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold outline-none">
+                                    <option value="">-- Who is this to? (Choose Client) --</option>
+                                </select>
+                                <div id="custDetailBox" class="text-xs text-slate-600 dark:text-slate-400 space-y-0.5 pt-1">
+                                    <div class="flex justify-between items-center text-[11px]">
+                                        <span class="text-slate-500">Credit Limit: <b id="dispCreditLimit" class="text-blue-600 dark:text-cyan-400">Rs. 0</b></span>
+                                        <span id="dispCreditStatus" class="font-bold text-emerald-600 text-[10px] bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">ACTIVE</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ship To -->
+                            <div class="space-y-1.5 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+                                <div class="flex justify-between items-center">
+                                    <label class="block text-xs font-black text-[#17365D] dark:text-cyan-400 uppercase tracking-wide">Ship To</label>
+                                    <span class="text-[10px] text-slate-400">(optional)</span>
+                                </div>
+                                <textarea id="invDeliveryAddress" rows="3" placeholder="Delivery destination, warehouse site, or client shipping address..." class="w-full text-xs p-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3 text-xs">
-                        <div>
-                            <span class="text-slate-500">Invoice No:</span>
-                            <span id="previewInvoiceNo" class="font-mono font-bold bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded text-blue-700 dark:text-cyan-300">ANX-2026-AUTO</span>
+
+                    <!-- Right Side: INVOICE Title & Metadata Table -->
+                    <div class="lg:col-span-6 space-y-3">
+                        <div class="flex justify-between items-center pb-2">
+                            <h1 class="text-3xl font-black text-[#17365D] dark:text-cyan-400 tracking-tight">INVOICE</h1>
+                            <div class="flex items-center space-x-1.5">
+                                <span class="text-base font-bold text-slate-400">#</span>
+                                <input type="text" id="invCustomNo" placeholder="ANX-2026-AUTO" class="w-36 text-right font-mono font-bold text-xs p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-blue-700 dark:text-cyan-300">
+                            </div>
                         </div>
-                        <div>
-                            <span class="text-slate-500">Date:</span>
-                            <input type="date" id="invDate" class="p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs">
-                        </div>
-                        <div>
-                            <span class="text-slate-500">Payment Due:</span>
-                            <select id="invDueDays" class="p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs font-semibold">
-                                <option value="0">Immediate / Cash</option>
-                                <option value="7">Net 7 Days</option>
-                                <option value="15" selected>Net 15 Days</option>
-                                <option value="30">Net 30 Days</option>
-                                <option value="60">Net 60 Days</option>
-                            </select>
+
+                        <!-- Metadata Grid Form -->
+                        <div class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-3.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
+                            <div class="grid grid-cols-12 items-center gap-2">
+                                <label class="col-span-4 font-bold text-slate-700 dark:text-slate-300">Date</label>
+                                <input type="date" id="invDate" onchange="onPaymentTermsChange(document.getElementById('invDueDays').value)" class="col-span-8 p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium text-xs">
+                            </div>
+                            <div class="grid grid-cols-12 items-center gap-2">
+                                <label class="col-span-4 font-bold text-slate-700 dark:text-slate-300">Payment Terms</label>
+                                <select id="invDueDays" onchange="onPaymentTermsChange(this.value)" class="col-span-8 p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-semibold text-xs">
+                                    <option value="0">Due on Receipt / Cash</option>
+                                    <option value="7">Net 7 Days</option>
+                                    <option value="15" selected>Net 15 Days</option>
+                                    <option value="30">Net 30 Days</option>
+                                    <option value="60">Net 60 Days</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-12 items-center gap-2">
+                                <label class="col-span-4 font-bold text-slate-700 dark:text-slate-300">Due Date</label>
+                                <input type="date" id="invDueDate" class="col-span-8 p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-medium text-xs">
+                            </div>
+                            <div class="grid grid-cols-12 items-center gap-2">
+                                <label class="col-span-4 font-bold text-slate-700 dark:text-slate-300">PO Number</label>
+                                <input type="text" id="invPoRef" placeholder="e.g. PO-89021" class="col-span-8 p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs">
+                            </div>
+                            <div class="grid grid-cols-12 items-center gap-2">
+                                <label class="col-span-4 font-bold text-slate-700 dark:text-slate-300">Dispatch Bay</label>
+                                <select id="branchSelector" class="col-span-8 p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs">
+                                    <option value="BR-LHR-01">Lahore Central HQ</option>
+                                    <option value="BR-KHI-02">Karachi Port Center</option>
+                                    <option value="BR-ISB-03">Islamabad Retail Hub</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Customer Selection & Metadata -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Customer / Client Account *</label>
-                        <select id="invCustomer" onchange="onCustomerChange(this.value)" class="w-full text-xs p-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none">
-                            <option value="">-- Choose Customer --</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Customer Credit Exposure</label>
-                        <div class="text-xs p-2 bg-white dark:bg-slate-800 rounded border border-slate-300 dark:border-slate-600 flex justify-between">
-                            <span class="text-slate-500">Limit: <b id="dispCreditLimit" class="text-blue-600 dark:text-cyan-400">Rs. 0</b></span>
-                            <span id="dispCreditStatus" class="font-bold text-emerald-600">ACTIVE</span>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Branch / Distribution Bay</label>
-                        <select id="branchSelector" class="w-full text-xs p-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none">
-                            <option value="BR-LHR-01">Lahore Central HQ</option>
-                            <option value="BR-KHI-02">Karachi Port Center</option>
-                            <option value="BR-ISB-03">Islamabad Retail Hub</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Additional Commercial Fields -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
-                    <div>
-                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Client PO / Order Ref #</label>
-                        <input type="text" id="invPoRef" placeholder="e.g. PO-89021" class="w-full p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                    </div>
-                    <div>
-                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Reference / Job Number</label>
-                        <input type="text" id="invRefNo" placeholder="e.g. JOB-2026-99" class="w-full p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                    </div>
-                    <div>
-                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Delivery / Shipping Destination</label>
-                        <input type="text" id="invDeliveryAddress" placeholder="Specific warehouse/site address" class="w-full p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                    </div>
-                    <div>
-                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Payment Method</label>
-                        <select id="invPayMethod" class="w-full p-1.5 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                            <option value="Bank Transfer">Bank Electronic Transfer</option>
-                            <option value="Cash">Cash on Counter / Delivery</option>
-                            <option value="Cheque">Crossed Cheque</option>
-                            <option value="Credit Card">Credit / Debit Card</option>
-                            <option value="Online Gateway">Online Payment Gateway</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Barcode Fast Scanner Bar -->
-                <div class="p-2.5 bg-slate-100 dark:bg-slate-900/60 rounded border border-slate-300 dark:border-slate-700 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <!-- Barcode Fast Scanner & Line Item Button Bar -->
+                <div class="p-2.5 bg-slate-100 dark:bg-slate-900/60 rounded-lg border border-slate-300 dark:border-slate-700 flex flex-wrap items-center justify-between gap-2 text-xs">
                     <div class="flex items-center space-x-2">
                         <span class="font-bold text-slate-700 dark:text-slate-300">⚡ Barcode / SKU Fast Scan:</span>
                         <input type="text" id="barcodeScanInput" placeholder="Scan barcode or type SKU + Enter (F3)" class="p-1 px-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs w-64">
                         <span id="barcodeScanStatus" class="font-semibold text-slate-500"></span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button onclick="addLineItemRow()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1 rounded text-xs transition">
-                            + Add Line Item
+                        <button type="button" onclick="addLineItemRow()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-1.5 rounded shadow-sm text-xs transition flex items-center space-x-1">
+                            <span>+ Line Item</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Configurable Line Items Grid -->
-                <div class="overflow-x-auto rounded border border-slate-200 dark:border-slate-700">
+                <!-- Configurable Line Items Grid (Executive Navy Theme) -->
+                <div class="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
                     <table class="w-full text-left text-xs border-collapse">
-                        <thead class="bg-slate-800 text-white uppercase text-[11px] font-bold">
+                        <thead class="bg-[#17365D] text-white uppercase text-[11px] font-bold tracking-wider">
                             <tr id="gridHeaderRow">
-                                <th class="p-2 w-48">Item / Service</th>
-                                <th class="p-2 w-32 col-variant">Pack / Variant</th>
-                                <th class="p-2 w-28 col-desc">Description</th>
-                                <th class="p-2 text-right w-20 col-cartons">Cartons</th>
-                                <th class="p-2 text-right w-20">Quantity</th>
-                                <th class="p-2 w-16">Unit</th>
-                                <th class="p-2 text-right w-24">Rate</th>
-                                <th class="p-2 text-right w-20 col-disc">Disc %</th>
-                                <th class="p-2 text-right w-20 col-tax">Tax %</th>
-                                <th class="p-2 text-right w-28">Line Total</th>
-                                <th class="p-2 text-center w-10">✕</th>
+                                <th class="p-2.5 w-52">Item / Service</th>
+                                <th class="p-2.5 w-36 col-variant">Pack / Variant</th>
+                                <th class="p-2.5 w-32 col-desc">Description</th>
+                                <th class="p-2.5 text-right w-20 col-cartons">Cartons</th>
+                                <th class="p-2.5 text-right w-20">Quantity</th>
+                                <th class="p-2.5 w-16">Unit</th>
+                                <th class="p-2.5 text-right w-24">Rate</th>
+                                <th class="p-2.5 text-right w-20 col-disc">Disc %</th>
+                                <th class="p-2.5 text-right w-20 col-tax">Tax %</th>
+                                <th class="p-2.5 text-right w-28">Amount</th>
+                                <th class="p-2.5 text-center w-10">✕</th>
                             </tr>
                         </thead>
                         <tbody id="itemsTableBody" class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800">
@@ -773,91 +805,110 @@
                         </tbody>
                     </table>
                 </div>
+                
+                <div class="flex justify-start">
+                    <button type="button" onclick="addLineItemRow()" class="w-full sm:w-auto px-6 py-2 border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-blue-500 rounded-lg text-slate-600 dark:text-slate-300 font-bold hover:text-blue-600 hover:bg-blue-50/50 dark:hover:bg-slate-700/50 text-xs transition flex items-center justify-center space-x-1">
+                        <span>+ Add Line Item</span>
+                    </button>
+                </div>
 
-                <!-- Commercial Calculation Summary & Footer -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <!-- Commercial Calculation Summary & Footer (Matching Reference Layout) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2 items-start">
                     <!-- Left: Notes & Terms -->
-                    <div class="space-y-3 text-xs">
-                        <div>
-                            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Invoice Notes & Milestone Remarks</label>
-                            <textarea id="invNotes" rows="2" placeholder="Special delivery instructions, project milestones, or warranty details..." class="w-full p-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"></textarea>
+                    <div class="lg:col-span-7 space-y-4 text-xs">
+                        <div class="space-y-1">
+                            <label class="block font-bold text-slate-700 dark:text-slate-300">Notes</label>
+                            <textarea id="invNotes" rows="3" placeholder="Notes - any relevant information not already covered (e.g. special delivery instructions, warranty details)" class="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none"></textarea>
                         </div>
-                        <div>
-                            <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Commercial Terms & Conditions</label>
-                            <textarea id="invTerms" rows="2" placeholder="Goods once sold..., Payment terms..." class="w-full p-2 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"></textarea>
+                        <div class="space-y-1">
+                            <label class="block font-bold text-slate-700 dark:text-slate-300">Terms</label>
+                            <textarea id="invTerms" rows="3" placeholder="Terms and conditions - late fees, payment methods, delivery schedule" class="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none"></textarea>
                         </div>
                     </div>
 
-                    <!-- Right: Math Summary & Advance Payments -->
-                    <div class="bg-slate-50 dark:bg-slate-900/60 p-4 rounded-lg border border-slate-200 dark:border-slate-700 space-y-2 text-xs">
-                        <div class="flex justify-between items-center text-slate-600 dark:text-slate-400">
-                            <span>Subtotal (Gross):</span>
-                            <span id="dispSubtotal" class="font-bold text-slate-900 dark:text-white">Rs. 0.00</span>
+                    <!-- Right: Math Summary, Discounts, Shipping, Tax, Amount Paid & Balance Due -->
+                    <div class="lg:col-span-5 bg-slate-50 dark:bg-slate-900/60 p-5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3 text-xs">
+                        <!-- Subtotal -->
+                        <div class="flex justify-between items-center text-slate-700 dark:text-slate-300 font-semibold">
+                            <span>Subtotal</span>
+                            <span id="dispSubtotal" class="font-bold text-slate-900 dark:text-white text-sm">Rs. 0.00</span>
                         </div>
 
-                        <!-- Invoice Level Discount -->
-                        <div class="flex justify-between items-center text-slate-600 dark:text-slate-400">
+                        <!-- Tax Row -->
+                        <div class="flex justify-between items-center text-slate-700 dark:text-slate-300">
+                            <span class="flex items-center space-x-1 font-semibold">
+                                <span>Tax</span>
+                                <input type="number" id="invTaxRateGlobal" value="0" min="0" max="100" oninput="recalcTotals()" class="w-14 p-1 text-right rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 font-bold text-xs" placeholder="0">
+                                <span>%</span>
+                            </span>
+                            <span id="dispTax" class="font-bold text-blue-600 dark:text-cyan-400">Rs. 0.00</span>
+                        </div>
+
+                        <!-- Toggle Controls: + Discount & + Shipping -->
+                        <div class="flex items-center space-x-3 pt-1 text-[11px]">
+                            <button type="button" onclick="toggleExtraField('discount')" id="btnToggleDisc" class="text-blue-600 hover:text-blue-800 dark:text-cyan-400 font-bold flex items-center space-x-0.5">
+                                <span>+ Discount</span>
+                            </button>
+                            <button type="button" onclick="toggleExtraField('shipping')" id="btnToggleShip" class="text-blue-600 hover:text-blue-800 dark:text-cyan-400 font-bold flex items-center space-x-0.5">
+                                <span>+ Shipping</span>
+                            </button>
+                        </div>
+
+                        <!-- Discount Row (Collapsible/Toggable) -->
+                        <div id="rowDiscount" class="flex justify-between items-center text-slate-700 dark:text-slate-300 pt-1">
                             <span class="flex items-center space-x-1">
-                                <span>Invoice Discount:</span>
-                                <select id="invDiscType" onchange="recalcTotals()" class="p-0.5 rounded border text-[10px] bg-white dark:bg-slate-800">
+                                <span class="font-semibold">Discount:</span>
+                                <select id="invDiscType" onchange="recalcTotals()" class="p-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-[11px]">
                                     <option value="PCT">%</option>
                                     <option value="FIXED">Rs.</option>
                                 </select>
-                                <input type="number" id="invDiscVal" value="0" min="0" oninput="recalcTotals()" class="w-14 p-0.5 text-right rounded border bg-white dark:bg-slate-800 text-[10px]">
+                                <input type="number" id="invDiscVal" value="0" min="0" oninput="recalcTotals()" class="w-16 p-1 text-right rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs">
                             </span>
                             <span id="dispDiscount" class="font-bold text-emerald-600">- Rs. 0.00</span>
                         </div>
 
-                        <!-- Shipping & Handling -->
-                        <div class="flex justify-between items-center text-slate-600 dark:text-slate-400">
+                        <!-- Shipping Row (Collapsible/Toggable) -->
+                        <div id="rowShipping" class="flex justify-between items-center text-slate-700 dark:text-slate-300 pt-1">
                             <span class="flex items-center space-x-1">
-                                <span>Freight / Shipping:</span>
-                                <input type="number" id="invShippingFee" value="0" min="0" oninput="recalcTotals()" class="w-16 p-0.5 text-right rounded border bg-white dark:bg-slate-800 text-[10px]">
+                                <span class="font-semibold">Shipping:</span>
+                                <input type="number" id="invShippingFee" value="0" min="0" oninput="recalcTotals()" class="w-20 p-1 text-right rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs">
                             </span>
                             <span id="dispShipping" class="font-bold text-slate-900 dark:text-white">Rs. 0.00</span>
                         </div>
 
-                        <div class="flex justify-between items-center text-slate-600 dark:text-slate-400">
-                            <span class="flex items-center space-x-1">
-                                <span>Other Charges / Labor:</span>
-                                <input type="number" id="invOtherCharges" value="0" min="0" oninput="recalcTotals()" class="w-16 p-0.5 text-right rounded border bg-white dark:bg-slate-800 text-[10px]">
-                            </span>
-                            <span id="dispOtherCharges" class="font-bold text-slate-900 dark:text-white">Rs. 0.00</span>
-                        </div>
-
-                        <!-- Tax Total -->
-                        <div class="flex justify-between items-center text-slate-600 dark:text-slate-400">
-                            <span>Sales Tax / GST / VAT:</span>
-                            <span id="dispTax" class="font-bold text-blue-600 dark:text-cyan-400">Rs. 0.00</span>
-                        </div>
+                        <!-- Divider -->
+                        <div class="border-t border-slate-300 dark:border-slate-700 pt-2"></div>
 
                         <!-- Grand Total -->
-                        <div class="flex justify-between items-center text-base font-black border-t border-slate-300 dark:border-slate-700 pt-2 text-slate-900 dark:text-white">
-                            <span>Grand Total:</span>
-                            <span id="dispGrandTotal" class="text-blue-700 dark:text-cyan-400">Rs. 0.00</span>
+                        <div class="flex justify-between items-center text-base font-black text-slate-900 dark:text-white">
+                            <span>Total</span>
+                            <span id="dispGrandTotal" class="text-blue-700 dark:text-cyan-400 text-lg font-black">Rs. 0.00</span>
                         </div>
 
-                        <!-- Initial Paid & Balance Due -->
+                        <!-- Amount Paid -->
                         <div class="flex justify-between items-center pt-1">
-                            <span class="flex items-center space-x-1 font-bold text-slate-700 dark:text-slate-300">
-                                <span>Advance / Paid Now:</span>
-                                <input type="number" id="invPaidAmount" value="0" min="0" oninput="recalcTotals()" class="w-24 p-1 text-right rounded border bg-white dark:bg-slate-800 font-bold text-emerald-600">
-                            </span>
-                            <div class="text-right">
-                                <span class="block text-[10px] text-slate-500 uppercase font-bold">Balance Due</span>
-                                <span id="dispBalanceDue" class="font-black text-red-600 text-sm">Rs. 0.00</span>
+                            <span class="font-bold text-slate-700 dark:text-slate-300">Amount Paid</span>
+                            <div class="flex items-center space-x-1">
+                                <span class="text-slate-500 font-bold" id="symAmountPaid">Rs.</span>
+                                <input type="number" id="invPaidAmount" value="0" min="0" oninput="recalcTotals()" class="w-28 p-1.5 text-right rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 font-bold text-emerald-600 text-sm">
                             </div>
+                        </div>
+
+                        <!-- Balance Due -->
+                        <div class="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                            <span class="font-black text-slate-900 dark:text-white text-sm uppercase">Balance Due</span>
+                            <span id="dispBalanceDue" class="font-black text-red-600 dark:text-red-400 text-lg">Rs. 0.00</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Submit Button Bar -->
-                <div class="flex flex-wrap items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-700 gap-2">
-                    <button onclick="showTab('dashboard')" class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white font-bold px-4 py-2 rounded text-xs transition">
+                <div class="flex flex-wrap items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700 gap-3">
+                    <button type="button" onclick="showTab('dashboard')" class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white font-bold px-4 py-2 rounded-lg text-xs transition">
                         ✕ Cancel & Return
                     </button>
-                    <div class="flex space-x-2">
-                        <button onclick="submitInvoice(false)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded shadow-lg text-xs transition flex items-center space-x-1">
+                    <div class="flex space-x-3">
+                        <button type="button" onclick="submitInvoice(false)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-lg shadow-lg text-xs transition flex items-center space-x-2">
                             <span>✓ Issue & Print Commercial Invoice</span>
                         </button>
                     </div>
@@ -1619,6 +1670,75 @@
             }
         }
 
+        // --- LOGO UPLOADER & DISPLAY ---
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const logoData = e.target.result;
+                SYSTEM_META.company.logo_data = logoData;
+                localStorage.setItem('agentnexus_company_logo', logoData);
+                renderLogoUI();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeLogo() {
+            SYSTEM_META.company.logo_data = null;
+            localStorage.removeItem('agentnexus_company_logo');
+            renderLogoUI();
+        }
+
+        function renderLogoUI() {
+            const savedLogo = localStorage.getItem('agentnexus_company_logo') || SYSTEM_META.company.logo_data;
+            const logoContainer = document.getElementById('invLogoContainer');
+            if (savedLogo) {
+                SYSTEM_META.company.logo_data = savedLogo;
+                if (logoContainer) {
+                    logoContainer.innerHTML = `
+                        <div class="relative group inline-block">
+                            <img src="${savedLogo}" alt="Company Logo" class="max-h-24 max-w-[160px] object-contain rounded-lg border border-slate-200 dark:border-slate-700 bg-white p-1 shadow-sm">
+                            <button type="button" onclick="removeLogo()" class="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shadow transition" title="Remove Logo">✕</button>
+                        </div>
+                    `;
+                }
+            } else {
+                if (logoContainer) {
+                    logoContainer.innerHTML = `
+                        <label class="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-3 w-40 h-24 cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-slate-700/50 transition text-center group">
+                            <span class="text-xs font-bold text-slate-600 dark:text-slate-300 group-hover:text-blue-600">+ Add Your Logo</span>
+                            <span class="text-[10px] text-slate-400">PNG, JPG, SVG</span>
+                            <input type="file" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
+                        </label>
+                    `;
+                }
+            }
+        }
+
+        function toggleExtraField(field) {
+            if (field === 'discount') {
+                const r = document.getElementById('rowDiscount');
+                if (r) r.classList.toggle('hidden');
+            } else if (field === 'shipping') {
+                const r = document.getElementById('rowShipping');
+                if (r) r.classList.toggle('hidden');
+            }
+        }
+
+        function onPaymentTermsChange(val) {
+            const invDateInput = document.getElementById('invDate');
+            const invDueDateInput = document.getElementById('invDueDate');
+            if (!invDateInput || !invDueDateInput) return;
+            if (!invDateInput.value) {
+                invDateInput.value = new Date().toISOString().split('T')[0];
+            }
+            const days = parseInt(val, 10) || 0;
+            const d = new Date(invDateInput.value);
+            d.setDate(d.getDate() + days);
+            invDueDateInput.value = d.toISOString().split('T')[0];
+        }
+
         // --- API & DATA FETCHING ---
         async function loadSystemMeta() {
             try {
@@ -1632,6 +1752,27 @@
                 document.getElementById('quickPresetSelector').value = preset;
                 document.getElementById('dashPreset').innerText = preset;
                 document.getElementById('invModeTag').innerText = `Mode: ${preset}`;
+
+                // Render Logo UI
+                renderLogoUI();
+
+                // Populate "Who is this from" inputs
+                const comp = SYSTEM_META.company || {};
+                const senderInp = document.getElementById('invCompanySender');
+                if (senderInp && !senderInp.value) senderInp.value = comp.company_name || 'AgentNexus Solutions';
+                const addrInp = document.getElementById('invCompanyAddress');
+                if (addrInp && !addrInp.value) addrInp.value = comp.address || 'Lahore, Pakistan';
+                const phoneInp = document.getElementById('invCompanyPhone');
+                if (phoneInp && !phoneInp.value) phoneInp.value = comp.phone || '+92 300 1234567';
+                const emailInp = document.getElementById('invCompanyEmail');
+                if (emailInp && !emailInp.value) emailInp.value = comp.email || 'billing@agentnexus.com';
+
+                // Default Date & Due Date
+                const dateInp = document.getElementById('invDate');
+                if (dateInp && !dateInp.value) {
+                    dateInp.value = new Date().toISOString().split('T')[0];
+                    onPaymentTermsChange(document.getElementById('invDueDays')?.value || 15);
+                }
 
                 // Populate Customer Dropdowns
                 const custSel = document.getElementById('invCustomer');
@@ -2217,6 +2358,16 @@
                     </div>`;
             }
 
+            const savedLogo = localStorage.getItem('agentnexus_company_logo') || comp.logo_data;
+            const logoHtml = savedLogo ? `
+                <img src="${savedLogo}" alt="Company Logo" class="max-h-16 max-w-[180px] object-contain mb-1.5">
+            ` : `
+                <div class="flex items-center space-x-2 mb-1">
+                    <span class="bg-[#17365D] text-white font-black text-sm px-2 py-0.5 rounded">ANX</span>
+                    <h1 class="text-xl font-extrabold text-[#17365D] tracking-tight">${comp.company_name}</h1>
+                </div>
+            `;
+
             const printArea = document.getElementById('printInvoiceArea');
             printArea.innerHTML = `
                 <div class="max-w-4xl mx-auto bg-white text-slate-900 font-sans p-6 text-xs leading-normal">
@@ -2227,10 +2378,7 @@
                     <!-- Header: Company & Invoice Info -->
                     <div class="flex justify-between items-start pb-5 border-b border-slate-300 gap-6">
                         <div class="space-y-1 max-w-md">
-                            <div class="flex items-center space-x-2">
-                                <span class="bg-[#17365D] text-white font-black text-sm px-2 py-0.5 rounded">ANX</span>
-                                <h1 class="text-xl font-extrabold text-[#17365D] tracking-tight">${comp.company_name}</h1>
-                            </div>
+                            ${logoHtml}
                             <p class="text-slate-600 text-[11px] leading-tight">${comp.address}</p>
                             <div class="text-[11px] text-slate-600 flex flex-wrap gap-x-3 pt-0.5">
                                 <span><b>Phone:</b> ${comp.phone}</span>
@@ -2730,51 +2878,179 @@
             const dc = challans.find(x => x.challan_no === challanNo);
             if (!dc) return;
 
+            const comp = SYSTEM_META.company || {};
+            const items = dc.items && dc.items.length > 0 ? dc.items : [];
+            
+            // Calculate total quantity across items or fallback to dc.total_pieces
+            let totalQty = items.reduce((sum, it) => sum + Number(it.quantity || it.total_pieces || 0), 0);
+            if (totalQty === 0 && dc.total_pieces) {
+                totalQty = dc.total_pieces;
+            }
+
+            // Generate table rows (pad to minimum 12 rows for official printed form look)
+            const minRows = 12;
+            let rowsHtml = '';
+            
+            if (items.length > 0) {
+                items.forEach((item, idx) => {
+                    let desc = item.item_name || 'Dispatch Item';
+                    let variantInfo = [];
+                    if (item.size) variantInfo.push(item.size);
+                    if (item.color) variantInfo.push(item.color);
+                    if (item.description && item.description !== 'LOOSE_PIECE' && item.description !== 'DISPATCH_PRODUCT' && item.description !== 'RATIO_CARTON') {
+                        variantInfo.push(item.description);
+                    }
+                    if (variantInfo.length > 0) {
+                        desc += ` - ${variantInfo.join(' / ')}`;
+                    }
+
+                    rowsHtml += `
+                        <tr class="border-b border-black text-[11px]">
+                            <td class="border-r border-black p-1.5 text-center font-semibold">${idx + 1}</td>
+                            <td class="border-r border-black p-1.5 font-bold">${desc}</td>
+                            <td class="border-r border-black p-1.5 text-center">${dc.po_ref || item.po_ref || '-'}</td>
+                            <td class="border-r border-black p-1.5 text-center">${dc.invoice_date || dc.dispatch_date || '-'}</td>
+                            <td class="border-r border-black p-1.5 text-center font-medium">${item.unit || 'Pcs'}</td>
+                            <td class="p-1.5 text-center font-black">${item.quantity || item.total_pieces}</td>
+                        </tr>
+                    `;
+                });
+
+                // Pad remaining rows up to minRows
+                for (let i = items.length; i < minRows; i++) {
+                    rowsHtml += `
+                        <tr class="border-b border-black text-[11px] h-7">
+                            <td class="border-r border-black p-1.5 text-center text-slate-300">${i + 1}</td>
+                            <td class="border-r border-black p-1.5">&nbsp;</td>
+                            <td class="border-r border-black p-1.5">&nbsp;</td>
+                            <td class="border-r border-black p-1.5">&nbsp;</td>
+                            <td class="border-r border-black p-1.5">&nbsp;</td>
+                            <td class="p-1.5">&nbsp;</td>
+                        </tr>
+                    `;
+                }
+            } else {
+                // Fallback row if no individual items recorded
+                rowsHtml += `
+                    <tr class="border-b border-black text-[11px]">
+                        <td class="border-r border-black p-1.5 text-center font-semibold">1</td>
+                        <td class="border-r border-black p-1.5 font-bold">${dc.invoice_no ? 'Invoice ' + dc.invoice_no + ' Dispatched Units' : 'Warehouse Stock Transfer'}</td>
+                        <td class="border-r border-black p-1.5 text-center">${dc.po_ref || '-'}</td>
+                        <td class="border-r border-black p-1.5 text-center">${dc.dispatch_date || '-'}</td>
+                        <td class="border-r border-black p-1.5 text-center font-medium">Pcs</td>
+                        <td class="p-1.5 text-center font-black">${totalQty}</td>
+                    </tr>
+                `;
+                for (let i = 1; i < minRows; i++) {
+                    rowsHtml += `
+                        <tr class="border-b border-black text-[11px] h-7">
+                            <td class="border-r border-black p-1.5 text-center text-slate-300">${i + 1}</td>
+                            <td class="border-r border-black p-1.5">&nbsp;</td>
+                            <td class="border-r border-black p-1.5">&nbsp;</td>
+                            <td class="border-r border-black p-1.5">&nbsp;</td>
+                            <td class="border-r border-black p-1.5">&nbsp;</td>
+                            <td class="p-1.5">&nbsp;</td>
+                        </tr>
+                    `;
+                }
+            }
+
             const printArea = document.getElementById('printChallanArea');
             printArea.innerHTML = `
-                <div class="border-b-2 border-slate-900 pb-3 mb-4 flex justify-between items-start">
-                    <div>
-                        <h1 class="text-xl font-black text-slate-900">${SYSTEM_META.company.company_name}</h1>
-                        <p class="font-bold">WAREHOUSE DISPATCH & GATE CLEARANCE PASS</p>
-                        <p>Origin Branch: ${dc.branch_name}</p>
-                    </div>
-                    <div class="text-right">
-                        <h2 class="text-xl font-black text-slate-800">DELIVERY CHALLAN</h2>
-                        <p class="text-sm font-bold text-blue-800">${dc.challan_no}</p>
-                        <p>Date: ${dc.dispatch_date}</p>
-                        <p>Invoice Ref: ${dc.invoice_no || 'Stock Transfer'}</p>
-                    </div>
-                </div>
+                <div class="max-w-3xl mx-auto bg-white text-black font-sans p-8 text-xs leading-normal">
+                    
+                    <!-- Header: Company & Gate Pass Title (Matching Reference Image) -->
+                    <div class="flex justify-between items-start pb-4">
+                        <!-- Left: Company Info -->
+                        <div class="space-y-0.5">
+                            <h1 class="text-2xl font-black text-[#0c2340] tracking-tight uppercase">${comp.company_name || 'DANISH APPAREL'}</h1>
+                            <p class="text-[11px] text-slate-800 font-medium">${comp.address || 'Farman Market, Hakim Chowk, Ashiyana Road, Lahore'}</p>
+                            <p class="text-[11px] text-slate-800 font-medium">Cell #: ${comp.phone || '+923068959469'}</p>
+                            <p class="text-[11px] text-blue-700 font-medium">Email:- ${comp.email || 'umerawan9469@gmail.com'}</p>
+                        </div>
 
-                <div class="grid grid-cols-2 gap-4 mb-4 bg-slate-50 p-3 rounded border border-slate-200 text-xs">
-                    <div>
-                        <p class="font-bold uppercase text-[10px] text-slate-500">CONSIGNEE / DESTINATION:</p>
-                        <p class="text-sm font-bold">${dc.customer_name || 'Direct Transfer'}</p>
+                        <!-- Right: Gate Pass Title & Box -->
+                        <div class="text-right min-w-[200px]">
+                            <div class="inline-block pb-1 mb-2 border-b-2 border-[#0c2340]">
+                                <h2 class="text-2xl font-bold text-[#0c2340] tracking-wide">Gate Pass</h2>
+                            </div>
+                            <table class="border border-black border-collapse text-xs ml-auto w-48 text-left">
+                                <tr>
+                                    <td class="border border-black p-1 font-bold bg-slate-50 w-16">Date</td>
+                                    <td class="border border-black p-1 font-semibold">${dc.dispatch_date || ''}</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-black p-1 font-bold bg-slate-50">D.C #:</td>
+                                    <td class="border border-black p-1 font-bold text-[#0c2340]">${dc.challan_no || ''}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <div class="text-right">
-                        <p class="font-bold uppercase text-[10px] text-slate-500">TRANSPORTER / DRIVER:</p>
-                        <p>Vehicle: <strong>${dc.vehicle_no || 'N/A'}</strong></p>
-                        <p>Driver: ${dc.driver_name} (${dc.driver_phone})</p>
+
+                    <!-- Delivery TO Bar -->
+                    <div class="my-3 space-y-1">
+                        <div class="bg-[#0c2340] text-white font-bold text-xs px-2.5 py-0.5 inline-block">
+                            Delivery TO:
+                        </div>
+                        <div class="border-b border-black pb-1 pt-1 font-bold text-sm">
+                            ${dc.customer_name || 'Direct Client Dispatch'} ${dc.customer_phone ? ' &nbsp;|&nbsp; Cell: ' + dc.customer_phone : ''}
+                        </div>
+                        <div class="border-b border-black pb-1 pt-0.5 text-xs text-slate-700">
+                            ${dc.delivery_address || dc.customer_address || 'Destination: Direct Warehouse Delivery'}
+                        </div>
                     </div>
-                </div>
 
-                <div class="p-4 bg-slate-100 rounded border border-slate-300 text-center my-6 space-y-2">
-                    <p class="text-xs uppercase font-bold text-slate-500 tracking-wider">TOTAL DISPATCH VOLUME SUMMARY</p>
-                    <div class="flex justify-center space-x-8 text-lg font-black">
-                        <div><span class="text-2xl text-blue-700">${dc.total_cartons}</span> Master Cartons / Boxes</div>
-                        <div><span class="text-2xl text-emerald-700">${dc.total_pieces}</span> Total Units Dispatch</div>
+                    <!-- Main Gate Pass Items Table (Clean Dark Navy Bordered Grid) -->
+                    <div class="mt-4 border-2 border-black">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-[#0c2340] text-white font-bold text-[11px] uppercase tracking-wider">
+                                <tr>
+                                    <th class="border-r border-black p-1.5 text-center w-16">SERIAL #</th>
+                                    <th class="border-r border-black p-1.5">DESCRIPTION</th>
+                                    <th class="border-r border-black p-1.5 text-center w-24">P.O #</th>
+                                    <th class="border-r border-black p-1.5 text-center w-24">P.O Date</th>
+                                    <th class="border-r border-black p-1.5 text-center w-16">UOM</th>
+                                    <th class="p-1.5 text-center w-20">QTY</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rowsHtml}
+                                <!-- Total Quantity Footer Row -->
+                                <tr class="border-t-2 border-black bg-slate-100 font-black text-xs">
+                                    <td colspan="5" class="border-r border-black p-2 text-center text-sm font-black uppercase tracking-wider">
+                                        Total Quantity
+                                    </td>
+                                    <td class="p-2 text-center text-sm font-black text-[#0c2340]">
+                                        ${totalQty}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
 
-                <div class="p-3 border-2 border-dashed border-slate-400 rounded-lg text-center my-4">
-                    <p class="font-bold text-xs uppercase text-slate-700">GATE CLEARANCE: <span class="text-emerald-700 font-black">${dc.gate_clearance_status}</span></p>
-                    <p class="text-xs text-slate-600 italic mt-0.5">${dc.security_stamp || 'VERIFIED PHYSICAL CLEARANCE'}</p>
-                </div>
+                    <!-- Transporter & Vehicle Info Bar -->
+                    <div class="grid grid-cols-2 gap-4 mt-4 p-2.5 bg-slate-50 border border-black rounded text-[11px]">
+                        <div>
+                            <span>Transporter / Driver: <strong>${dc.driver_name || 'Direct Transport'}</strong></span>
+                            ${dc.driver_phone ? `<span> (${dc.driver_phone})</span>` : ''}
+                        </div>
+                        <div class="text-right">
+                            <span>Vehicle / Registration No: <strong>${dc.vehicle_no || 'N/A'}</strong></span>
+                        </div>
+                    </div>
 
-                <div class="grid grid-cols-3 gap-6 pt-12 mt-8 text-center text-xs">
-                    <div><p class="border-t border-slate-400 pt-1 font-bold">Storekeeper / Loading Incharge</p></div>
-                    <div><p class="border-t border-slate-400 pt-1 font-bold">Transporter Acceptance</p></div>
-                    <div><p class="border-t border-slate-400 pt-1 font-bold">Security Gate Officer</p></div>
+                    <!-- Signatures Section -->
+                    <div class="grid grid-cols-3 gap-6 pt-16 mt-8 text-center text-[11px] font-bold">
+                        <div>
+                            <div class="border-t border-black pt-1">Storekeeper / Loading Incharge</div>
+                        </div>
+                        <div>
+                            <div class="border-t border-black pt-1">Transporter Acceptance</div>
+                        </div>
+                        <div>
+                            <div class="border-t border-black pt-1">Security Gate Officer</div>
+                        </div>
+                    </div>
                 </div>
             `;
             window.print();

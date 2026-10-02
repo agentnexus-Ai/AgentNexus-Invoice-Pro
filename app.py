@@ -1152,7 +1152,9 @@ class AgentNexusHandler(http.server.SimpleHTTPRequestHandler):
         conn = get_db()
         cur = conn.cursor()
         cur.execute("""
-            SELECT dc.*, b.branch_name, c.company_name AS customer_name
+            SELECT dc.*, b.branch_name, c.company_name AS customer_name,
+                   i.po_ref, i.invoice_date, i.delivery_address, i.reference_no,
+                   c.phone AS customer_phone, c.email AS customer_email, c.address AS customer_address
             FROM delivery_challans dc
             JOIN branches b ON dc.branch_id = b.branch_id
             LEFT JOIN invoices i ON dc.invoice_no = i.invoice_no
@@ -1160,6 +1162,21 @@ class AgentNexusHandler(http.server.SimpleHTTPRequestHandler):
             ORDER BY dc.dispatch_date DESC
         """)
         challans = [dict(r) for r in cur.fetchall()]
+        
+        # Attach line items to each challan for detailed Gate Pass printing
+        for dc in challans:
+            if dc.get('invoice_no'):
+                cur.execute("""
+                    SELECT ii.*, pv.size, pv.color
+                    FROM invoice_items ii
+                    LEFT JOIN product_variants pv ON ii.variant_id = pv.variant_id
+                    WHERE ii.invoice_no = ?
+                    ORDER BY ii.item_id ASC
+                """, (dc['invoice_no'],))
+                dc['items'] = [dict(r) for r in cur.fetchall()]
+            else:
+                dc['items'] = []
+
         conn.close()
         self.send_json(challans)
 
